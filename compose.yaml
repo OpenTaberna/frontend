@@ -1,0 +1,10 @@
+services:
+  storefront:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4300:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
