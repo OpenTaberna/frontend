@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ApiService } from '../core/api.service';
+import { AnalyticsService } from '../core/analytics.service';
 import { CartService } from '../core/cart.service';
 import { errorMessage, money } from '../core/format';
 import { Item } from '../models';
@@ -19,7 +20,7 @@ import { Item } from '../models';
     </div> }
   </section>` })
 export class ProductComponent {
-  private readonly route=inject(ActivatedRoute);private readonly api=inject(ApiService);private readonly sanitizer=inject(DomSanitizer);readonly cart=inject(CartService);readonly item=signal<Item|null>(null);readonly error=signal('');readonly description=signal<SafeHtml>('');
-  constructor(){const id=this.route.snapshot.paramMap.get('id')!;this.api.item(id).subscribe({next:item=>{this.item.set(item);this.description.set(this.sanitizer.bypassSecurityTrustHtml(item.description||item.short_description||''))},error:e=>this.error.set(errorMessage(e))});}
+  private readonly route=inject(ActivatedRoute);private readonly api=inject(ApiService);private readonly analytics=inject(AnalyticsService);private readonly sanitizer=inject(DomSanitizer);readonly cart=inject(CartService);readonly item=signal<Item|null>(null);readonly error=signal('');readonly description=signal<SafeHtml>('');
+  constructor(){const id=this.route.snapshot.paramMap.get('id')!;this.api.item(id).subscribe({next:item=>{this.item.set(item);this.analytics.track('product_view',{sku:item.sku,path:`/shop/${id}`});this.description.set(this.sanitizer.bypassSecurityTrustHtml(item.description||item.short_description||''))},error:e=>this.error.set(errorMessage(e))});}
   price(i:Item){return money(i.price.amount,i.price.currency)} moneyValue=money; available(i:Item){return i.inventory.stock_status==='in_stock'||i.inventory.allow_backorder} entries(value:Record<string,unknown>){return Object.entries(value)}
 }

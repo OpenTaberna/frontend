@@ -1,16 +1,21 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { AnalyticsService } from './analytics.service';
 import { CartLine, Item } from '../models';
 
 const CART_KEY = 'opentaberna-cart-v2';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  private readonly analytics = inject(AnalyticsService);
   private readonly linesState = signal<CartLine[]>(this.restore());
   readonly lines = this.linesState.asReadonly();
   readonly count = computed(() => this.linesState().reduce((sum, line) => sum + line.quantity, 0));
   readonly total = computed(() => this.linesState().reduce((sum, line) => sum + line.item.price.amount * line.quantity, 0));
 
   add(item: Item, quantity = 1): void {
+    // Instrumented here rather than at the button, so every route into the
+    // cart is counted and a new one cannot silently skip reporting.
+    this.analytics.track('add_to_cart', { sku: item.sku });
     const lines = [...this.linesState()];
     const existing = lines.find(line => line.item.uuid === item.uuid);
     if (existing) existing.quantity += quantity; else lines.push({ item, quantity });
