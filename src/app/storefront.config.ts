@@ -22,4 +22,15 @@ export const storefrontConfig = {
     enabled: false,
     endpoint: '/api/v1/analytics/events',
   },
+
+  /**
+   * Uncaught error reporting.
+   *
+   * Off by default, like analytics. Requires FRONTEND_ERRORS_ENABLED on the
+   * API, which otherwise answers the endpoint with a 404.
+   */
+  errorReporting: {
+    enabled: false,
+    endpoint: '/api/v1/telemetry/errors',
+  },
 } as const;
