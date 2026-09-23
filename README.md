@@ -21,3 +21,7 @@ docker compose up --build -d
 Open `http://localhost:4300`. The Keycloak realm must contain the storefront redirect/web origin for this exact port, as provided by the backend realm import.
 
 The item-store inventory fields are displayed as catalogue metadata. The checkout endpoint is responsible for validating and reserving authoritative stock from the separate inventory service.
+
+## Licence
+
+Apache License 2.0 — see [LICENSE](LICENSE).
