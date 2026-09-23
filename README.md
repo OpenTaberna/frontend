@@ -20,6 +20,8 @@ docker compose up --build -d
 
 Open `http://localhost:4300`. The Keycloak realm must contain the storefront redirect/web origin for this exact port, as provided by the backend realm import.
 
+Product images come from the API as paths relative to its root (`/v1/items/{uuid}/image`); `ApiService` resolves them against `apiUrl`, so they load through the same `/api` proxy as every other call.
+
 The item-store inventory fields are displayed as catalogue metadata. The checkout endpoint is responsible for validating and reserving authoritative stock from the separate inventory service.
 
 ## Licence
