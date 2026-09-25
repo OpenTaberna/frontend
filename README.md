@@ -24,6 +24,10 @@ Product images come from the API as paths relative to its root (`/v1/items/{uuid
 
 The item-store inventory fields are displayed as catalogue metadata. The checkout endpoint is responsible for validating and reserving authoritative stock from the separate inventory service.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Licence
 
 Apache License 2.0 — see [LICENSE](LICENSE).
